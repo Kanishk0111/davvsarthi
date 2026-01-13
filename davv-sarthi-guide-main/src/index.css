@@ -198,3 +198,36 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
+/* marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite; /* slower = premium */
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes seat-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-seat-marquee {
+  animation: seat-marquee 22s linear infinite;
+}
+

@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
+import FloatingChatbot from "@/components/chatbot/FloatingChatbot";
+
+
 
 /* =======================
    STUDENT PAGES
@@ -16,15 +19,12 @@ import Eligibility from "./pages/Eligibility";
 import Prediction from "./pages/Prediction";
 import Fees from "./pages/Fees";
 import FAQ from "./pages/FAQ";
-import UserPrograms from "./pages/UserPrograms";
-import Merit from "./pages/Merit";
-import Seats from "./pages/Seats";
 import Reservation from "./pages/Reservation";
 import Cutoffs from "./pages/Cutoffs";
-import AdmissionProcess from "./pages/AdmissionProcess";
 import Instructions from "./pages/Instructions";
 import NotFound from "./pages/NotFound";
-
+import Notify from "./pages/Notify";
+import LiveSeatAvailability from "./pages/LiveSeatAvailability";
 /* =======================
    ADMIN PAGES
 ======================= */
@@ -50,67 +50,70 @@ const App = () => (
       <Sonner />
 
       <BrowserRouter>
-        <Routes>
-  {/* ROOT REDIRECT */}
-  <Route path="/" element={<Navigate to="/login" replace />} />
+  <Routes>
+    {/* ROOT REDIRECT */}
+    <Route path="/" element={<Navigate to="/login" replace />} />
 
-  {/* LOGIN */}
-  <Route path="/login" element={<Login />} />
+    {/* LOGIN */}
+    <Route path="/login" element={<Login />} />
 
-  {/* =======================
-      STUDENT ROUTES
-  ======================= */}
-  <Route
-    path="/student/dashboard"
-    element={
-      <ProtectedRoute role="student">
-        <Index />
-      </ProtectedRoute>
-    }
-  />
+    {/* =======================
+        STUDENT ROUTES
+    ======================= */}
+    <Route
+      path="/student/dashboard"
+      element={
+        <ProtectedRoute role="student">
+          <Index />
+        </ProtectedRoute>
+      }
+    />
 
-  <Route path="/courses" element={<Courses />} />
-  <Route path="/programs" element={<UserPrograms />} />
-  <Route path="/merit" element={<Merit />} />
-  <Route path="/seats" element={<Seats />} />
-  <Route path="/eligibility" element={<Eligibility />} />
-  <Route path="/prediction" element={<Prediction />} />
-  <Route path="/reservation" element={<Reservation />} />
-  <Route path="/admissionprocess" element={<AdmissionProcess />} />
-  <Route path="/instructions" element={<Instructions />} />
-  <Route path="/cutoffs" element={<Cutoffs />} />
-  <Route path="/fees" element={<Fees />} />
-  <Route path="/faq" element={<FAQ />} />
+    <Route path="/courses" element={<Courses />} />
+    <Route path="/eligibility" element={<Eligibility />} />
+    <Route path="/prediction" element={<Prediction />} />
+    <Route path="/reservation" element={<Reservation />} />
+    <Route path="/instructions" element={<Instructions />} />
+    <Route path="/cutoffs" element={<Cutoffs />} />
+    <Route path="/fees" element={<Fees />} />
+    <Route path="/faq" element={<FAQ />} />
+    <Route path="/notify" element={<Notify />} />
+    <Route path="/live-seat-availability" element={<LiveSeatAvailability />} /> 
 
-  {/* =======================
-      ADMIN ROUTES
-  ======================= */}
-  <Route
-    path="/admin/dashboard"
-    element={
-      <ProtectedRoute role="admin">
-        <AdminDashboard />
-      </ProtectedRoute>
-    }
-  />
+    {/* =======================
+        ADMIN ROUTES
+    ======================= */}
+    <Route
+      path="/admin/dashboard"
+      element={
+        <ProtectedRoute role="admin">
+          <AdminDashboard />
+        </ProtectedRoute>
+      }
+    />
 
-  <Route path="/admin/courses" element={<AdminCourses />} />
-  <Route path="/admin/eligibility" element={<AdminEligibility />} />
-  <Route path="/admin/fees" element={<AdminFeeStructure />} />
-  <Route path="/admin/admission-process" element={<AdminAdmissionProcess />} />
-  <Route path="/admin/programs" element={<AdminPrograms />} />
-  <Route path="/admin/seats" element={<AdminSeats />} />
-  <Route path="/admin/reservation" element={<AdminReservation />} />
-  <Route path="/admin/merit-rules" element={<AdminMeritRules />} />
-  <Route path="/admin/instructions" element={<AdminInstructions />} />
-  <Route path="/admin/previous-year-cutoffs" element={<AdminPreviousYearCutoffs />} />
-  <Route path="/admin/*" element={<AdminNotFound />} />
+    <Route path="/admin/courses" element={<AdminCourses />} />
+    <Route path="/admin/eligibility" element={<AdminEligibility />} />
+    <Route path="/admin/fees" element={<AdminFeeStructure />} />
+    <Route path="/admin/admission-process" element={<AdminAdmissionProcess />} />
+    <Route path="/admin/programs" element={<AdminPrograms />} />
+    <Route path="/admin/seats" element={<AdminSeats />} />
+    <Route path="/admin/reservation" element={<AdminReservation />} />
+    <Route path="/admin/merit-rules" element={<AdminMeritRules />} />
+    <Route path="/admin/instructions" element={<AdminInstructions />} />
+    <Route
+      path="/admin/previous-year-cutoffs"
+      element={<AdminPreviousYearCutoffs />}
+    />
+    <Route path="/admin/*" element={<AdminNotFound />} />
 
-  {/* GLOBAL 404 */}
-  <Route path="*" element={<NotFound />} />
-</Routes>
+    {/* GLOBAL 404 */}
+    <Route path="*" element={<NotFound />} />
+  </Routes>
 
-      </BrowserRouter>
+  {/*  GLOBAL FLOATING CHATBOT */}
+  <FloatingChatbot />
+</BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );

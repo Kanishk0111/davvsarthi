@@ -8,14 +8,18 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    localStorage.setItem("role", role);
+  localStorage.setItem("role", role);
 
-    if (role === "admin") {
-      navigate("/admin/dashboard");
-    } else {
-      navigate("/student/dashboard");
-    }
-  };
+  if (role === "student") {
+    // ✅ mark student as logged in (used for notice popup)
+    sessionStorage.setItem("student_logged_in", "true");
+    sessionStorage.removeItem("admission_notice_seen"); // reset per login
+    navigate("/student/dashboard");
+  } else {
+    navigate("/admin/dashboard");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4">

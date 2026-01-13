@@ -1,4 +1,8 @@
+"use client";
+
+import { useState, useMemo } from "react";
 import Layout from "@/components/layout/Layout";
+import { Search } from "lucide-react";
 
 /* ================= TYPES ================= */
 
@@ -8,89 +12,123 @@ type CutoffRecord = {
   course: string;
   department: string;
   category: string;
-  lastRank: string;
-  admitted: string;
+  closingRank: string;
 };
 
-/* ================= SAME DATA (READ-ONLY) ================= */
+/* ================= DATA ================= */
 
 const cutoffData: CutoffRecord[] = [
-  { id: 1, year: "2023", course: "M.Tech IT", department: "IT", category: "UR-O", lastRank: "74", admitted: "Yes" },
-  { id: 2, year: "2023", course: "M.Tech IT", department: "IT", category: "UR-F", lastRank: "146", admitted: "Yes" },
-  { id: 3, year: "2023", course: "M.Tech AI & DS", department: "CS", category: "UR-O", lastRank: "93", admitted: "Yes" },
-  { id: 4, year: "2023", course: "M.Tech AI & DS", department: "CS", category: "UR-F", lastRank: "197", admitted: "Yes" },
-  { id: 5, year: "2023", course: "MCA", department: "Computer Applications", category: "UR-O", lastRank: "346", admitted: "Yes" },
-  { id: 6, year: "2023", course: "MCA", department: "Computer Applications", category: "UR-F", lastRank: "538", admitted: "Yes" },
+  { id: 1, year: "2023", course: "M.Tech IT", department: "IT", category: "UR-O", closingRank: "74" },
+  { id: 2, year: "2023", course: "M.Tech IT", department: "IT", category: "UR-F", closingRank: "146" },
+  { id: 3, year: "2023", course: "M.Tech AI & DS", department: "CS", category: "UR-O", closingRank: "93" },
+  { id: 4, year: "2023", course: "M.Tech AI & DS", department: "CS", category: "UR-F", closingRank: "197" },
+  { id: 5, year: "2023", course: "MCA", department: "Computer Applications", category: "UR-O", closingRank: "346" },
+  { id: 6, year: "2023", course: "MCA", department: "Computer Applications", category: "UR-F", closingRank: "538" },
 
-  { id: 7, year: "2025", course: "MBA (Management Science)", department: "Management", category: "UR-O", lastRank: "250", admitted: "Yes" },
-  { id: 8, year: "2025", course: "MBA (Finance)", department: "Management", category: "UR-O", lastRank: "200", admitted: "Yes" },
-  { id: 9, year: "2025", course: "MBA (E-Commerce)", department: "Management", category: "UR-O", lastRank: "220", admitted: "Yes" },
-  { id: 10, year: "2025", course: "MBA (Tourism)", department: "Tourism", category: "UR-O", lastRank: "180", admitted: "Yes" },
+  { id: 7, year: "2025", course: "MBA (Management Science)", department: "Management", category: "UR-O", closingRank: "250" },
+  { id: 8, year: "2025", course: "MBA (Finance)", department: "Management", category: "UR-O", closingRank: "200" },
+  { id: 9, year: "2025", course: "MBA (E-Commerce)", department: "Management", category: "UR-O", closingRank: "220" },
+  { id: 10, year: "2025", course: "MBA (Tourism)", department: "Tourism", category: "UR-O", closingRank: "180" },
 
-  { id: 11, year: "2025", course: "MBA (Management Science)", department: "Management", category: "OBC", lastRank: "350", admitted: "Yes" },
-  { id: 12, year: "2025", course: "MBA (Finance)", department: "Management", category: "OBC", lastRank: "370", admitted: "Yes" },
-  { id: 13, year: "2025", course: "BBA (Business Decision)", department: "Management", category: "OBC", lastRank: "470", admitted: "Yes" },
-  { id: 14, year: "2025", course: "BBA (Aviation)", department: "Aviation Studies", category: "OBC", lastRank: "800", admitted: "Yes" },
-  { id: 15, year: "2025", course: "MCA", department: "Computer Applications", category: "OBC", lastRank: "300", admitted: "Yes" },
+  { id: 11, year: "2025", course: "MBA (Management Science)", department: "Management", category: "OBC", closingRank: "350" },
+  { id: 12, year: "2025", course: "MBA (Finance)", department: "Management", category: "OBC", closingRank: "370" },
+  { id: 13, year: "2025", course: "BBA (Business Decision)", department: "Management", category: "OBC", closingRank: "470" },
+  { id: 14, year: "2025", course: "BBA (Aviation)", department: "Aviation Studies", category: "OBC", closingRank: "800" },
+  { id: 15, year: "2025", course: "MCA", department: "Computer Applications", category: "OBC", closingRank: "300" },
 ];
 
-/* ================= COMPONENT ================= */
+/* ================= PAGE ================= */
 
 const Cutoffs = () => {
+  const [search, setSearch] = useState("");
+
+  const filteredData = useMemo(() => {
+    return cutoffData.filter((row) =>
+      `${row.year} ${row.course} ${row.department} ${row.category}`
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
+  }, [search]);
+
   return (
     <Layout>
-      <div className="space-y-8">
+      <div className="max-w-6xl mx-auto space-y-10">
 
         {/* HEADER */}
-        <div className="text-center">
+        <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold">
             Previous Year Admission Cut-offs
           </h1>
-          <p className="text-muted-foreground mt-2">
-            Historical cutoff ranks (for reference only)
+          <p className="text-muted-foreground">
+            Historical closing ranks (for reference only)
           </p>
         </div>
 
         {/* DISCLAIMER */}
-        <div className="border border-yellow-500 bg-yellow-50 p-3 text-xs rounded-lg">
-          <strong>Disclaimer:</strong> Cut-off ranks shown are based on previous
-          admission cycles and are indicative only. Actual cut-offs may vary
-          each year depending on merit and seat availability.
+        <div className="flex items-start gap-3 border border-yellow-400/40 bg-yellow-50 rounded-xl p-4 text-sm">
+          <span className="font-bold text-yellow-600">⚠</span>
+          <p className="text-yellow-800">
+            <strong>Disclaimer:</strong> Closing ranks shown are indicative based
+            on previous admission cycles. Actual cut-offs may vary depending on
+            merit, category, and seat availability.
+          </p>
+        </div>
+
+        {/* SEARCH */}
+        <div className="max-w-md mx-auto relative">
+          <Search className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search by year, course, department, category"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-xl border bg-background px-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          />
         </div>
 
         {/* TABLE */}
-        <div className="bg-card border rounded-xl p-5 overflow-x-auto">
-          <table className="w-full text-sm border-collapse border">
-            <thead className="bg-muted">
-              <tr>
-                <th className="border p-2">Year</th>
-                <th className="border p-2">Course</th>
-                <th className="border p-2">Department</th>
-                <th className="border p-2">Category</th>
-                <th className="border p-2">Last Rank</th>
-                <th className="border p-2">Admitted</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {cutoffData.map((row) => (
-                <tr key={row.id}>
-                  <td className="border p-2 text-center">{row.year}</td>
-                  <td className="border p-2">{row.course}</td>
-                  <td className="border p-2">{row.department}</td>
-                  <td className="border p-2 text-center">{row.category}</td>
-                  <td className="border p-2 text-center font-semibold">
-                    {row.lastRank}
-                  </td>
-                  <td className="border p-2 text-center text-success">
-                    {row.admitted}
-                  </td>
+        <div className="bg-card border rounded-2xl p-4 overflow-x-auto shadow-sm">
+          {filteredData.length > 0 ? (
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-muted text-muted-foreground">
+                  <th className="p-3 text-left">Year</th>
+                  <th className="p-3 text-left">Course</th>
+                  <th className="p-3 text-left">Department</th>
+                  <th className="p-3 text-center">Category</th>
+                  <th className="p-3 text-center">Closing Rank</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
 
+              <tbody>
+                {filteredData.map((row, index) => (
+                  <tr
+                    key={row.id}
+                    className={index % 2 === 0 ? "bg-background" : "bg-muted/30"}
+                  >
+                    <td className="p-3">{row.year}</td>
+                    <td className="p-3 font-medium">{row.course}</td>
+                    <td className="p-3">{row.department}</td>
+
+                    <td className="p-3 text-center">
+                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary">
+                        {row.category}
+                      </span>
+                    </td>
+
+                    <td className="p-3 text-center font-semibold">
+                      {row.closingRank}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="text-center text-muted-foreground py-10">
+              No cutoff records found
+            </p>
+          )}
+        </div>
       </div>
     </Layout>
   );

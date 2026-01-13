@@ -80,7 +80,7 @@ const Reservation = () => {
                 <th className="border p-2">Reservation %</th>
                 <th className="border p-2">Domicile</th>
                 <th className="border p-2">Applicable For</th>
-                <th className="border p-2">Notes</th>
+                <th className="border p-2">Description</th>
               </tr>
             </thead>
 
